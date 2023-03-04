@@ -1,2 +1,3 @@
-.vscode
-first task/output/
+/.vscode
+/first task/output/
+/.gitignore
