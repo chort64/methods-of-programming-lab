@@ -104,7 +104,7 @@ bool isSorted(int* array, int size) {
 // В случае, если поток можно создать, то он создается и кол-во потоков увеличивается на единицу.
 int NUMBER_OF_THREADS;
 int MAX_THREADS;
-clock_t start;
+clock_t start;  
 
 void secondParallelQuickSort(int* array, int low, int high) {
     int mid = array[(low + high) / 2];
@@ -145,9 +145,6 @@ void secondParallelQuickSort(int* array, int low, int high) {
     else if (j > low) {
         quickSort(array, low, j);
     }
-
-
-
 }
 
 
