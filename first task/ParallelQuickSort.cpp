@@ -85,9 +85,18 @@ void firstParallelQuickSort(int* array, int low, int high) {
 }
 
 
+bool isSorted(int* array, int size) {
+
+    for (int i = 1; i < size; ++i)
+        if (array[i - 1] > array[i]) {
+            return false;
+        }
+    return true;
+}
+
 
 // Вторая реализация многопоточной быстрой сортировки
-// Здесь вводятся дополниельные глобальные переменные:
+// Здесь вводятся дополнительные глобальные переменные:
 //     - количество созданных потоков - NUMBER_OF_THREADS ( данный параметр не отражает действительное кол-во потоков,
 //                                                          а лишь с некоторой погрешностью ) 
 //     - максимальное число потоков - ограничение для создания потоков.
@@ -95,6 +104,8 @@ void firstParallelQuickSort(int* array, int low, int high) {
 // В случае, если поток можно создать, то он создается и кол-во потоков увеличивается на единицу.
 int NUMBER_OF_THREADS;
 int MAX_THREADS;
+clock_t start;
+
 void secondParallelQuickSort(int* array, int low, int high) {
     int mid = array[(low + high) / 2];
     int i = low; 
@@ -134,6 +145,9 @@ void secondParallelQuickSort(int* array, int low, int high) {
     else if (j > low) {
         quickSort(array, low, j);
     }
+
+
+
 }
 
 
@@ -157,7 +171,7 @@ void printArray(int* array, int size) {
 void printTimeOfWork(int sizeOfArray, void functionOfSort(int*, int, int)) {
     int* array = createArray(sizeOfArray); 
 
-    clock_t start = clock();
+    start = clock();
 
     functionOfSort(array, 0, sizeOfArray - 1);
 
@@ -169,17 +183,15 @@ void printTimeOfWork(int sizeOfArray, void functionOfSort(int*, int, int)) {
 
 int main() {
 
-    int SIZE_OF_ARRAY = 1000000000;
-    NUMBER_OF_THREADS = 1;
-    MAX_THREADS = 30;
+    int SIZE_OF_ARRAY = 5e8;
 
     // Для Миллиарда элементов выполняется за ~170 секунд
-    cout << "Quick sort in one thread:" << '\n';
-    printTimeOfWork(SIZE_OF_ARRAY, quickSort);
+    // cout << "Quick sort in one thread:" << '\n';
+    // printTimeOfWork(SIZE_OF_ARRAY, quickSort);
 
     // Для Миллиарда элементов выполняется за ~75 секунд
-    cout << "Quick sort in first version of multi thread function:" << '\n';
-    printTimeOfWork(SIZE_OF_ARRAY, firstParallelQuickSort);
+    // cout << "Quick sort in first version of multi thread function:" << '\n';
+    // printTimeOfWork(SIZE_OF_ARRAY, firstParallelQuickSort);
 
     // // Для Миллиарда элементов выполняется за ~26 секунд
     // cout << "Quick sort in second version of multi thread function:" << '\n';
@@ -205,7 +217,8 @@ int main() {
     // // Для Миллиарда элементов выполняется за ~21 секунд
     cout << "Quick sort in second version of multi thread function:" << '\n';
     NUMBER_OF_THREADS = 1;
-    MAX_THREADS = 40;
+    MAX_THREADS = 8;
     cout << "Max threads: " << MAX_THREADS << '\n';
     printTimeOfWork(SIZE_OF_ARRAY, secondParallelQuickSort);
+
 }
